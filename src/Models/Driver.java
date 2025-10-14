@@ -28,44 +28,43 @@ public class Driver extends TeamMember {
     public Driver(String name, int age, double wage, int carNumber) {
         super(name, age, wage);
         this.carNumber = carNumber;
-        this.handicap = 0;
+        Practice();
         this.pointsOnSeason = 0;
     }
 
     public void saveResult(int finishPosition) {
         switch (finishPosition) {
             case 1:
-                setPointsOnSeason(25);
+                setPointsOnSeason(getPointsOnSeason() + 25);
                 break;
             case 2:
-                setPointsOnSeason(18);
+                setPointsOnSeason(getPointsOnSeason() + 18);
                 break;
             case 3:
-                setPointsOnSeason(15);
+                setPointsOnSeason(getPointsOnSeason() + 15);
                 break;
             case 4:
-                setPointsOnSeason(12);
+                setPointsOnSeason(getPointsOnSeason() + 12);
                 break;
             case 5:
-                setPointsOnSeason(10);
+                setPointsOnSeason(getPointsOnSeason() + 10);
                 break;
             case 6:
-                setPointsOnSeason(8);
+                setPointsOnSeason(getPointsOnSeason() + 8);
                 break;
             case 7:
-                setPointsOnSeason(6);
+                setPointsOnSeason(getPointsOnSeason() + 6);
                 break;
             case 8:
-                setPointsOnSeason(4);
+                setPointsOnSeason(getPointsOnSeason() + 4);
                 break;
             case 9:
-                setPointsOnSeason(2);
+                setPointsOnSeason(getPointsOnSeason() + 2);
                 break;
             case 10:
-                setPointsOnSeason(1);
+                setPointsOnSeason(getPointsOnSeason() + 1);
                 break;
             default:
-                setPointsOnSeason(0);
                 break;
         }
     }

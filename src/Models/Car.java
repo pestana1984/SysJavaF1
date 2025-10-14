@@ -6,10 +6,12 @@ public class Car {
     private double aerodinamicCoeficient;
     private Driver accountableDriver;
 
-    public Car(String model, int horsePower, double aerodinamicCoeficient, Driver accountableDriver) {
+    public Car(String model, int horsePower, Driver accountableDriver) {
+        //TODO sortear o coeficiente
+
         this.model = model;
         this.horsePower = horsePower;
-        this.aerodinamicCoeficient = aerodinamicCoeficient;
+        //this.aerodinamicCoeficient = aerodinamicCoeficient;
         this.accountableDriver = accountableDriver;
     }
 
@@ -53,8 +55,6 @@ public class Car {
     }
 
     public double calculateEficiency(int driverHandicap){
-
         return this.horsePower * this.aerodinamicCoeficient * (driverHandicap / 100.0);
-
     }
 }

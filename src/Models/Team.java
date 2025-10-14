@@ -7,8 +7,6 @@ public class Team {
     private String citizenship;
     private TeamBoss boss;
 
-    //TODO Adicionar um chefe de equipe no construtor
-
     public ArrayList<Car> cars;
     public ArrayList<TeamMember> members;
 

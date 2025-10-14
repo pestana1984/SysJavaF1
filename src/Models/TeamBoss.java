@@ -6,5 +6,7 @@ public class TeamBoss extends TeamMember {
         super(name, age, wage);
     }
 
-    //TODO Adicionar um propriedade de bonus por performance
+    public void setBonus(double bonus){
+        setWage(getWage() + bonus);
+    }
 }
