@@ -65,36 +65,69 @@ public class TemporadaF1 {
         ArrayList<Car> cars = new ArrayList<>();
 
         //Crei a primeira equipe com 2 carros
-        var team = CreateTeam();
-        var car1 = CreateCar();
-        var car2 = CreateCar();
+        //var team = CreateTeam();
+        //var car1 = CreateCar();
+        //var car2 = CreateCar();
+        var boss1 = new TeamBoss("Fred Vasseur", 50, 500);
+        var boss2 = new TeamBoss("Andrea Stella", 50, 500);
 
-        team.addCar(car1);
-        team.addCar(car2);
+        var team1 = new Team("Ferrari", "Italia", boss1);
+        var team2 = new Team("McLaren", "Inglaterra", boss2);
+
+        var driver1 = new Driver("Carles Leclerc", 25, 500, 16);
+        var driver2 = new Driver("Lewis Hamilton", 40, 500, 44);
+
+        var car1 = new Car("SF25", 500, driver1);
+        var car2 = new Car("SF25", 500, driver2);
+
+        var driver3 = new Driver("Lando Norris", 25, 500, 4);
+        var driver4 = new Driver("Oscar Piastri", 25, 500, 81);
+
+        var car3 = new Car("MCP33", 500, driver3);
+        var car4 = new Car("MCP33", 500, driver4);
+
+        team1.addCar(car1);
+        team1.addCar(car2);
 
         //Adicionei na lista de equipes
-        teams.add(team);
+        teams.add(team1);
 
         //Criei a segunda equipe com mais 2 carros
-        team = CreateTeam();
-        car1 = CreateCar();
-        car2 = CreateCar();
+//        team = CreateTeam();
+//        car1 = CreateCar();
+//        car2 = CreateCar();
 
-        team.addCar(car1);
-        team.addCar(car2);
+        team2.addCar(car3);
+        team2.addCar(car4);
 
         //Adicionei a nova equipe na lista de equipes
-        teams.add(team);
+        teams.add(team2);
 
-        for(int i = 0; i < teams.size(); i++){
-            cars.add(teams.get(i).cars.get(i));
-            cars.add(teams.get(i).cars.get(i+1));
+        for(Team team : teams){
+            cars.addAll(team.cars);
         }
 
-        Race race = new Race(cars);
+        Race race = new Race(cars, "BR", "Interlagos");
 
         race.startRace();
-        race.showRaceResult();
+        race.showRaceResult(race.classification, race.drivers);
+
+        System.out.println("Campeonato de Pilotos:");
+        for(Driver driver : race.drivers){
+            System.out.println("Nome: " + driver.getName());
+            System.out.println("Pontos: " + driver.getPointsOnSeason());
+        }
+
+        race = new Race(cars, "AU", "Melbourne");
+
+        race.startRace();
+        race.showRaceResult(race.classification, race.drivers);
+
+        System.out.println("Campeonato de Pilotos:");
+        for(Driver driver : race.drivers){
+            System.out.println("Nome: " + driver.getName());
+            System.out.println("Pontos: " + driver.getPointsOnSeason());
+        }
 
     }
 }

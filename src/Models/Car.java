@@ -1,5 +1,7 @@
 package Models;
 
+import java.util.Random;
+
 public class Car {
     private String model;
     private int horsePower;
@@ -9,9 +11,10 @@ public class Car {
     public Car(String model, int horsePower, Driver accountableDriver) {
         //TODO sortear o coeficiente
 
+        Random rand = new Random();
         this.model = model;
         this.horsePower = horsePower;
-        //this.aerodinamicCoeficient = aerodinamicCoeficient;
+        this.aerodinamicCoeficient = rand.nextDouble() * 10; //sorteia um numero double de 1.0 a 10.0
         this.accountableDriver = accountableDriver;
     }
 
