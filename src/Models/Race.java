@@ -10,11 +10,14 @@ public class Race {
     public ArrayList<Car> cars;
     public ArrayList<Driver> drivers;
     public int[] classification;
+    public ArrayList<Team> teams;
 
-    public Race(ArrayList<Car> cars, String country, String circuitName) {
+    public Race(ArrayList<Car> cars, String country, String circuitName, ArrayList<Team> teams) {
         this.circuitName = circuitName;
         this.country = country;
         this.cars = cars;
+        this.classification = new int[cars.size()];
+        this.teams = teams;
 
         this.drivers = new ArrayList<>();
         for (Car car : cars) {
@@ -46,7 +49,18 @@ public class Race {
         for (int i = 0; i < cars.size(); i++) {
             classification[i] = cars.get(i).getAccountableDriver().carNumber;
         }
-        updatePointsOnSeason();
+
+        updateDriversPointsOnSeason();
+        updateTeamsPointsOnSeason();
+
+        for(Driver driver : drivers) {
+            driver.Practice();
+        }
+
+        for(Car car : cars){
+            car.calculateEficiency(car.getAccountableDriver().getHandicap());
+        }
+
     }
 
     public void showRaceResult(int[] classification, ArrayList<Driver> drivers) {
@@ -64,13 +78,19 @@ public class Race {
         }
     }
 
-    void updatePointsOnSeason() {
-        for(int i = 0; i < 4; i++) {
+    void updateDriversPointsOnSeason() {
+        for(int i = 0; i < classification.length; i++) {
             for(Driver driver : drivers) {
                 if(driver.carNumber == classification[i]) {
                     driver.saveResult(i+1);
                 }
             }
+        }
+    }
+
+    void updateTeamsPointsOnSeason(){
+        for (Team team : teams) {
+            team.calculatePointsOnSeason();
         }
     }
 }

@@ -6,6 +6,7 @@ public class Team {
     private String name;
     private String citizenship;
     private TeamBoss boss;
+    private int pointsOnSeason;
 
     public ArrayList<Car> cars;
     public ArrayList<TeamMember> members;
@@ -17,10 +18,27 @@ public class Team {
         this.cars = new ArrayList<Car>();
         this.members = new ArrayList<TeamMember>();
         this.members.add(boss);
+        this.pointsOnSeason = 0;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public String getBossName() {
+        return this.boss.getName();
+    }
+
+    public int getPointsOnSeason() {
+        return this.pointsOnSeason;
     }
 
     public void addMember(TeamMember member){
         this.members.add(member);
+    }
+
+    public ArrayList<TeamMember> getMembers(){
+        return this.members;
     }
 
     public void addCar(Car car){
@@ -40,14 +58,13 @@ public class Team {
         }
     }
 
-    public int calculatePointsOnSeason(){
+    public void calculatePointsOnSeason(){
         int totalPoints = 0;
 
-        for(int i = 0; i < members.size(); i++){
-            if(members.get(i) instanceof Driver)
-                totalPoints += ((Driver)members.get(i)).getPointsOnSeason();
+        for(Car car : cars){
+            totalPoints += car.getAccountableDriver().getPointsOnSeason();
         }
 
-        return totalPoints;
+        this.pointsOnSeason = totalPoints;
     }
 }
