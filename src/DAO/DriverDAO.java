@@ -5,6 +5,8 @@ import Models.Driver;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class DriverDAO {
@@ -61,8 +63,27 @@ public class DriverDAO {
                 generatedKeys.close();
             }
         }
-        catch (Exception e) {
+        catch (SQLException e) {
             System.err.println(e.getMessage());
         }
     }
-}
+
+    /*public static ArrayList<Driver> GetDrivers(ConnectDB db) {
+
+        String sqlSelectDriver = "select tm.name, d.id from \"Drivers\" d" +
+                    "join \"TeamMembers\" tm" +
+                    "ON d.id_member = tm.id";
+        ArrayList<Driver> drivers = new ArrayList<>();
+
+        try(PreparedStatement ps = db.getConnection().prepareStatement(sqlSelectDriver){
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                Driver driver = new Driver()
+            }
+        }
+        catch(SQLException e){
+            System.err.println(e.getMessage());
+        }
+*/
+    }

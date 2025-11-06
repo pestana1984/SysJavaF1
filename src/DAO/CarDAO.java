@@ -14,6 +14,9 @@ public class CarDAO {
             System.out.println("Informe a potencia do carro: ");
             int potencia = sc.nextInt();
             sc.nextLine();
+
+
+
         }
         catch(Exception e){
             System.out.println(e.getMessage());

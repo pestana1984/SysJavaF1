@@ -2,6 +2,8 @@ package TemporadaF1;
 
 import DAO.DriverDAO;
 import DAO.EngineerDAO;
+import DAO.TeamBossDAO;
+import DAO.TeamDAO;
 import Data.ConnectDB;
 import Models.*;
 
@@ -104,19 +106,25 @@ public class TemporadaF1 {
         //Cadastra Engenheiro
         //EngineerDAO.InsertEngineer(db);
         //List Engenheiros
-        for(Engineer e : EngineerDAO.GetEngineers(db)) {
+ /*       for(Engineer e : EngineerDAO.GetEngineers(db)) {
             e.showInfo();
             System.out.println("-----------------");
-        }
+        }*/
 
         //Cadastra Piloto
-        DriverDAO.InsertDriver(db);
+        //DriverDAO.InsertDriver(db);
 //        //List Pilotos
 //        for(Driver d : DriverDAO.GetDrivers(db)) {
 //            d.showInfo();
 //        }
 
+        //CadastraChefe
+        //TeamBossDAO.InsertTeamBoss(db);
+        //TeamBossDAO.GetTeamBosses(db).forEach(TeamBoss::showInfo);
 
+        //Cadastra Equipe
+        //TeamDAO.InsertTeam(db);
+        TeamDAO.GetTeams(db).forEach(Team::showTeam);
 
 
     }
