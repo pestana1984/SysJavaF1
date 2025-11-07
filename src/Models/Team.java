@@ -21,6 +21,10 @@ public class Team {
         this.pointsOnSeason = 0;
     }
 
+    public Team(String name){
+        this.name = name;
+    }
+
     public String getName() {
         return this.name;
     }

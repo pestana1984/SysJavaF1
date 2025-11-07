@@ -38,7 +38,9 @@ public class Driver extends TeamMember {
         this.pointsOnSeason = 0;
     }
 
-    //public Driver(String name)
+    public Driver(String name){
+        super(name);
+    }
 
     public void saveResult(int finishPosition) {
         switch (finishPosition) {

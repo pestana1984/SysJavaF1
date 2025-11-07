@@ -68,22 +68,29 @@ public class DriverDAO {
         }
     }
 
-    /*public static ArrayList<Driver> GetDrivers(ConnectDB db) {
+    public static ArrayList<Driver> GetDrivers(ConnectDB db) {
 
-        String sqlSelectDriver = "select tm.name, d.id from \"Drivers\" d" +
-                    "join \"TeamMembers\" tm" +
-                    "ON d.id_member = tm.id";
+        String sqlSelectDriver = "select tm.name, tm.age, tm.wage, d.carnumber " +
+                            "from \"TeamMembers\" tm " +
+                            "join \"Drivers\" d " +
+                            "on tm.id = d.id_member";
+
         ArrayList<Driver> drivers = new ArrayList<>();
 
-        try(PreparedStatement ps = db.getConnection().prepareStatement(sqlSelectDriver){
+        try(PreparedStatement ps = db.getConnection().prepareStatement(sqlSelectDriver)){
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
-                Driver driver = new Driver()
+                Driver driver = new Driver(rs.getString("name"),
+                                    rs.getInt("age"),
+                                    rs.getDouble("wage"),
+                                    rs.getInt("carnumber"));
+                drivers.add(driver);
             }
         }
         catch(SQLException e){
             System.err.println(e.getMessage());
         }
-*/
+        return drivers;
     }
+}
