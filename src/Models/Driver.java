@@ -4,6 +4,7 @@ import java.util.Random;
 
 public class Driver extends TeamMember {
 
+    private int id;
     public int carNumber;
     private int handicap;
     private int pointsOnSeason;
@@ -29,7 +30,7 @@ public class Driver extends TeamMember {
         return carNumber;
     }
 
-    public void setCarNumber(int carNumber) {}
+    public void setCarNumber(int carNumber) {this.carNumber = carNumber;}
 
     public Driver(String name, int age, double wage, int carNumber) {
         super(name, age, wage);
@@ -38,8 +39,17 @@ public class Driver extends TeamMember {
         this.pointsOnSeason = 0;
     }
 
-    public Driver(String name){
+    public Driver(String name, int age, double wage, int carNumber, int handicap, int pointsOnSeason, int id){
+        super(name, age, wage);
+        this.id = id;
+        this.carNumber = carNumber;
+        this.handicap = handicap;
+        this.pointsOnSeason = pointsOnSeason;
+    }
+
+    public Driver(String name, int carNumber){
         super(name);
+        this.carNumber = carNumber;
     }
 
     public void saveResult(int finishPosition) {
@@ -81,7 +91,7 @@ public class Driver extends TeamMember {
 
     public void Practice(){
         Random rand = new Random();
-        int increase = rand.nextInt(6);
+        int increase = rand.nextInt(1,6);
         setHandicap(increase);
     }
 

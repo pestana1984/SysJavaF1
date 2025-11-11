@@ -77,7 +77,7 @@ public class CarDAO {
 
     public static ArrayList<Car> GetCars(ConnectDB db) {
 
-        String sql = "select c.model, c.hp, c.aerodynamic, tm.\"name\" from \"Cars\" c " +
+        String sql = "select c.model, c.hp, c.aerodynamic, tm.\"name\", d.carnumber from \"Cars\" c " +
                 "join \"Drivers\" d " +
                 "on c.id_driver = d.id " +
                 "join \"Teams\" t  " +
@@ -92,7 +92,7 @@ public class CarDAO {
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
 
-                Driver driver = new Driver(rs.getString(4));
+                Driver driver = new Driver(rs.getString(4), rs.getInt(5));
 
                 Car car = new Car(rs.getString(1),
                         rs.getInt(2),

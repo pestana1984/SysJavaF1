@@ -70,7 +70,7 @@ public class DriverDAO {
 
     public static ArrayList<Driver> GetDrivers(ConnectDB db) {
 
-        String sqlSelectDriver = "select tm.name, tm.age, tm.wage, d.carnumber " +
+        String sqlSelectDriver = "select tm.name, tm.age, tm.wage, d.carnumber, d.handicap, d.pointsonseason, d.id " +
                             "from \"TeamMembers\" tm " +
                             "join \"Drivers\" d " +
                             "on tm.id = d.id_member";
@@ -84,7 +84,11 @@ public class DriverDAO {
                 Driver driver = new Driver(rs.getString("name"),
                                     rs.getInt("age"),
                                     rs.getDouble("wage"),
-                                    rs.getInt("carnumber"));
+                                    rs.getInt("carnumber"),
+                                    rs.getInt("handicap"),
+                                    rs.getInt( "pointsonseason"),
+                                    rs.getInt("id")
+                );
                 drivers.add(driver);
             }
         }

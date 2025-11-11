@@ -6,6 +6,7 @@ import Models.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Random;
 import java.util.Scanner;
 
 public class TemporadaF1 {
@@ -62,7 +63,7 @@ public class TemporadaF1 {
         return new Car(modelo, potencia, driver);
     }
 
-    public static void ShowDriversChampionship(Race race){
+    public static void ShowDriversChampionship(RaceResult race){
         System.out.println("\n\nCampeonato de Pilotos:");
         var championship = race.drivers;
 
@@ -104,7 +105,6 @@ public class TemporadaF1 {
         //EngineerDAO.InsertEngineer(db);
         // EngineerDAO.GetEngineers(db).forEach(Engineer::showInfo);
 
-
         //Cadastra Piloto
         //DriverDAO.InsertDriver(db);
         //DriverDAO.GetDrivers(db).forEach(Driver::showInfo);
@@ -126,6 +126,18 @@ public class TemporadaF1 {
         //CircuitDAO.InsertCircuit(db);
         //CircuitDAO.GetCircuits(db).forEach(Circuit::showInfo);
 
+        ArrayList<Car> cars = CarDAO.GetCars(db);
+        ArrayList<Team> teams = TeamDAO.GetTeams(db);
+
+        Circuit circuit = CircuitDAO.GetCircuits(db).get(0);
+
+        RaceResult race = new RaceResult(cars, circuit.getCountry(), circuit.getName(), teams);
+
+        race.startRace();
+
+        RaceResultDAO.InsertRaceResult(db, race.getClassification(), race.getCircuitName());
+
+        //race.showRaceResult(race.classification, race.drivers);
 
     }
 }

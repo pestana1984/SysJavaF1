@@ -40,7 +40,7 @@ public class CircuitDAO {
     }
 
     public static ArrayList<Circuit> GetCircuits(ConnectDB db) {
-        String sql = "SELECT NAME, COUNTRY FROM \"Circuits\"";
+        String sql = "SELECT NAME, COUNTRY, ID FROM \"Circuits\"";
 
         ArrayList<Circuit> circuits = new ArrayList<>();
 
@@ -48,7 +48,7 @@ public class CircuitDAO {
 
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
-                Circuit circuit = new Circuit(rs.getString(1), rs.getString(2));
+                Circuit circuit = new Circuit(rs.getString(1), rs.getString(2), rs.getInt(3));
                 circuits.add(circuit);
             }
 
@@ -57,5 +57,22 @@ public class CircuitDAO {
         }
 
         return circuits;
+    }
+
+    public static Circuit GetCircuitByName(ConnectDB db, String name) {
+        String sql = "SELECT NAME, COUNTRY, ID FROM \"Circuits\" WHERE NAME = ?";
+
+        try(PreparedStatement ps = db.getConnection().prepareStatement(sql)){
+
+            ps.setString(1, name);
+
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            return new Circuit(rs.getString(1), rs.getString(2), rs.getInt(3));
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());;
+        }
+        return null;
     }
 }
