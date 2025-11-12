@@ -64,7 +64,7 @@ public class RaceResult {
             car.calculateEficiency(car.getAccountableDriver().getHandicap());
         }
 
-        showRaceResult(classification, drivers);
+        //showRaceResult(classification, drivers);
     }
 
     private void showRaceResult(int[] classification, ArrayList<Driver> drivers) {

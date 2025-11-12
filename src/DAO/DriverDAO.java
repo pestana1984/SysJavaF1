@@ -62,8 +62,7 @@ public class DriverDAO {
                 }
                 generatedKeys.close();
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
     }
@@ -71,30 +70,57 @@ public class DriverDAO {
     public static ArrayList<Driver> GetDrivers(ConnectDB db) {
 
         String sqlSelectDriver = "select tm.name, tm.age, tm.wage, d.carnumber, d.handicap, d.pointsonseason, d.id " +
-                            "from \"TeamMembers\" tm " +
-                            "join \"Drivers\" d " +
-                            "on tm.id = d.id_member";
+                "from \"TeamMembers\" tm " +
+                "join \"Drivers\" d " +
+                "on tm.id = d.id_member";
 
         ArrayList<Driver> drivers = new ArrayList<>();
 
-        try(PreparedStatement ps = db.getConnection().prepareStatement(sqlSelectDriver)){
+        try (PreparedStatement ps = db.getConnection().prepareStatement(sqlSelectDriver)) {
             ResultSet rs = ps.executeQuery();
 
-            while(rs.next()){
+            while (rs.next()) {
                 Driver driver = new Driver(rs.getString("name"),
-                                    rs.getInt("age"),
-                                    rs.getDouble("wage"),
-                                    rs.getInt("carnumber"),
-                                    rs.getInt("handicap"),
-                                    rs.getInt( "pointsonseason"),
-                                    rs.getInt("id")
+                        rs.getInt("age"),
+                        rs.getDouble("wage"),
+                        rs.getInt("carnumber"),
+                        rs.getInt("handicap"),
+                        rs.getInt("pointsonseason"),
+                        rs.getInt("id")
                 );
                 drivers.add(driver);
             }
-        }
-        catch(SQLException e){
+        } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
         return drivers;
+    }
+
+    public static int GetDriverIdByCarNumber(ConnectDB db, int carNumber) {
+        String sqlSelectDriver = "select d.id " +
+                "from \"TeamMembers\" tm " +
+                "join \"Drivers\" d " +
+                "on tm.id = d.id_member " +
+                "where d.carnumber = ?";
+
+        int idDriver = 0;
+
+        try (PreparedStatement ps = db.getConnection().prepareStatement(sqlSelectDriver)) {
+
+            ps.setInt(1, carNumber);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                idDriver = rs.getInt("id");
+            }
+
+
+        }
+        catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return idDriver;
     }
 }

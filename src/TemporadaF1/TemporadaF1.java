@@ -2,6 +2,7 @@ package TemporadaF1;
 
 import DAO.*;
 import Data.ConnectDB;
+import Entities.RaceResultResponse;
 import Models.*;
 
 import java.util.ArrayList;
@@ -109,7 +110,6 @@ public class TemporadaF1 {
         //DriverDAO.InsertDriver(db);
         //DriverDAO.GetDrivers(db).forEach(Driver::showInfo);
 
-
         //CadastraChefe
         //TeamBossDAO.InsertTeamBoss(db);
         //TeamBossDAO.GetTeamBosses(db).forEach(TeamBoss::showInfo);
@@ -126,10 +126,12 @@ public class TemporadaF1 {
         //CircuitDAO.InsertCircuit(db);
         //CircuitDAO.GetCircuits(db).forEach(Circuit::showInfo);
 
+        Random rand = new Random();
+
         ArrayList<Car> cars = CarDAO.GetCars(db);
         ArrayList<Team> teams = TeamDAO.GetTeams(db);
 
-        Circuit circuit = CircuitDAO.GetCircuits(db).get(0);
+        Circuit circuit = CircuitDAO.GetCircuits(db).get(3);
 
         RaceResult race = new RaceResult(cars, circuit.getCountry(), circuit.getName(), teams);
 
@@ -137,7 +139,24 @@ public class TemporadaF1 {
 
         RaceResultDAO.InsertRaceResult(db, race.getClassification(), race.getCircuitName());
 
-        //race.showRaceResult(race.classification, race.drivers);
+        var rr = RaceResultDAO.GetRaceResults(db, race.getCircuitName());
+
+        rr.forEach(System.out::println);
+
+        Circuit circuit2 = CircuitDAO.GetCircuits(db).get(6);
+
+        RaceResult race2 = new RaceResult(cars, circuit2.getCountry(), circuit2.getName(), teams);
+
+        race2.startRace();
+
+        RaceResultDAO.InsertRaceResult(db, race2.getClassification(), race2.getCircuitName());
+
+        var rr2 = RaceResultDAO.GetRaceResults(db, race2.getCircuitName());
+
+        rr2.forEach(System.out::println);
+
+        //TODO - Corrigir a atualização de pontos dos pilotos
+        //TODO - Corrigir a definição da pontuação de cada corrida (Race Result)
 
     }
 }
