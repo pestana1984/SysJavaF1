@@ -12,6 +12,10 @@ public abstract class TeamMember {
         this.wage = wage;
     }
 
+    public TeamMember(String name){
+        this.name = name;
+    }
+
     public void showInfo(){
         System.out.println("Nome: " + getName());
         System.out.println("Idade: " + getAge());

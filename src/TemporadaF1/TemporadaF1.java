@@ -1,9 +1,13 @@
 package TemporadaF1;
 
+import DAO.*;
+import Data.ConnectDB;
+import Entities.RaceResultResponse;
 import Models.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Random;
 import java.util.Scanner;
 
 public class TemporadaF1 {
@@ -60,7 +64,7 @@ public class TemporadaF1 {
         return new Car(modelo, potencia, driver);
     }
 
-    public static void ShowDriversChampionship(Race race){
+    public static void ShowDriversChampionship(RaceResult race){
         System.out.println("\n\nCampeonato de Pilotos:");
         var championship = race.drivers;
 
@@ -91,87 +95,65 @@ public class TemporadaF1 {
 
     public static void main(String[] args) {
 
-        ArrayList<Team> teams = new ArrayList<>();
-        ArrayList<Car> cars = new ArrayList<>();
+        ConnectDB db = new ConnectDB("dpg-d3rcb88gjchc73cpjlug-a.oregon-postgres.render.com",
+                "testjava", "Q0buWnbkqDMFmYEHZXXMtSHL54NHrNZ9", "testjava_gz5z");
 
-        var boss1 = new TeamBoss("Fred Vasseur", 50, 500);
-        var boss2 = new TeamBoss("Andrea Stella", 50, 500);
-
-        var boss3 = new TeamBoss("Matia Binotto", 50, 500);
-        var boss4 = new TeamBoss("Lorran Max", 40, 500);
-
-        var team1 = new Team("Ferrari", "Italia", boss1);
-        var team2 = new Team("McLaren", "Inglaterra", boss2);
-        var team3 = new Team("Stake Sauber", "Suiça", boss3);
-        var team4 = new Team("Red Bull", "Austria", boss4);
-
-        var driver1 = new Driver("Carles Leclerc", 25, 500, 16);
-        var driver2 = new Driver("Lewis Hamilton", 40, 500, 44);
-
-        var car1 = new Car("SF25", 500, driver1);
-        var car2 = new Car("SF25", 500, driver2);
-
-        var driver3 = new Driver("Lando Norris", 25, 500, 4);
-        var driver4 = new Driver("Oscar Piastri", 25, 500, 81);
-
-        var car3 = new Car("MCP33", 500, driver3);
-        var car4 = new Car("MCP33", 500, driver4);
-
-        var driver5 = new Driver("Gabriel Bortoletto", 20, 500, 6);
-        var driver6 = new Driver("Nick Hulkenberg", 38, 500, 17);
-
-        var car5 = new Car("SS25", 500, driver5);
-        var car6 = new Car("SS25", 500, driver6);
-
-        var driver7 = new Driver("Max Verstappen", 26, 500, 1);
-        var driver8 = new Driver("Yuki Tsunoda", 26, 500, 22);
-
-        var car7 = new Car("RB25", 500, driver7);
-        var car8 = new Car("RB25", 500, driver8);
-
-        team1.addCar(car1);
-        team1.addCar(car2);
-
-        team2.addCar(car3);
-        team2.addCar(car4);
-
-        team3.addCar(car5);
-        team3.addCar(car6);
-
-        team4.addCar(car7);
-        team4.addCar(car8);
-
-        //Adicionei na lista de equipes
-        teams.add(team1);
-        teams.add(team2);
-        teams.add(team3);
-        teams.add(team4);
-
-        for(Team team : teams){
-            cars.addAll(team.cars);
+        if(db.getConnection() != null)
+        {
+            System.out.println("Conectado com sucesso!");
         }
+        //Cadastra Engenheiro
+        //EngineerDAO.InsertEngineer(db);
+        // EngineerDAO.GetEngineers(db).forEach(Engineer::showInfo);
 
-        Race race = new Race(cars, "BR", "Interlagos", teams);
+        //Cadastra Piloto
+        //DriverDAO.InsertDriver(db);
+        //DriverDAO.GetDrivers(db).forEach(Driver::showInfo);
+
+        //CadastraChefe
+        //TeamBossDAO.InsertTeamBoss(db);
+        //TeamBossDAO.GetTeamBosses(db).forEach(TeamBoss::showInfo);
+
+        //Cadastra Equipe
+        //TeamDAO.InsertTeam(db);
+        //TeamDAO.GetTeams(db).forEach(Team::showTeam);
+
+        //Cadastra Carro
+        //CarDAO.InsertCar(db);
+        //CarDAO.GetCars(db).forEach(Car::showInfo);
+
+        //Cadastra Circuito
+        //CircuitDAO.InsertCircuit(db);
+        //CircuitDAO.GetCircuits(db).forEach(Circuit::showInfo);
+
+        Random rand = new Random();
+
+        ArrayList<Car> cars = CarDAO.GetCars(db);
+        ArrayList<Team> teams = TeamDAO.GetTeams(db);
+
+        Circuit circuit = CircuitDAO.GetCircuits(db).get(3);
+
+        RaceResult race = new RaceResult(cars, circuit.getCountry(), circuit.getName(), teams);
 
         race.startRace();
-        race.showRaceResult(race.classification, race.drivers);
 
-        ShowDriversChampionship(race);
-        ShowTeamsChampionship(teams);
+        RaceResultDAO.InsertRaceResult(db, race.getClassification(), race.getCircuitName());
 
-        race = new Race(cars, "AU", "Melbourne", teams);
+        var rr = RaceResultDAO.GetRaceResults(db, race.getCircuitName());
 
-        race.startRace();
-        race.showRaceResult(race.classification, race.drivers);
+        rr.forEach(System.out::println);
 
-        ShowDriversChampionship(race);
-        ShowTeamsChampionship(teams);
+        Circuit circuit2 = CircuitDAO.GetCircuits(db).get(6);
 
-        race = new Race(cars, "US", "Circuit of America", teams);
-        race.startRace();
-        race.showRaceResult(race.classification, race.drivers);
+        RaceResult race2 = new RaceResult(cars, circuit2.getCountry(), circuit2.getName(), teams);
 
-        ShowDriversChampionship(race);
-        ShowTeamsChampionship(teams);
+        race2.startRace();
+
+        RaceResultDAO.InsertRaceResult(db, race2.getClassification(), race2.getCircuitName());
+
+        var rr2 = RaceResultDAO.GetRaceResults(db, race2.getCircuitName());
+
+        rr2.forEach(System.out::println);
+
     }
 }

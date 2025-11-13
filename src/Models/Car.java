@@ -9,13 +9,30 @@ public class Car {
     private Driver accountableDriver;
 
     public Car(String model, int horsePower, Driver accountableDriver) {
-        //TODO sortear o coeficiente
 
         Random rand = new Random();
         this.model = model;
         this.horsePower = horsePower;
         this.aerodinamicCoeficient = rand.nextDouble() * 10; //sorteia um numero double de 1.0 a 10.0
         this.accountableDriver = accountableDriver;
+    }
+
+    public Car(String model, int horsePower, double aerodinamicCoeficient) {
+        this.model = model;
+        this.horsePower = horsePower;
+        this.aerodinamicCoeficient = aerodinamicCoeficient;
+    }
+
+    public Car(String model, int horsePower, double aerodinamicCoeficient, Driver accountableDriver) {
+        this.model = model;
+        this.horsePower = horsePower;
+        this.aerodinamicCoeficient = aerodinamicCoeficient;
+        this.accountableDriver = accountableDriver;
+    }
+
+    public Car(String model, int horsePower) {
+        this.model = model;
+        this.horsePower = horsePower;
     }
 
     public String getModel() {

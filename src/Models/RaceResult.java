@@ -1,9 +1,8 @@
 package Models;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 
-public class Race {
+public class RaceResult {
 
     private String circuitName;
     private String country;
@@ -12,7 +11,7 @@ public class Race {
     public int[] classification;
     public ArrayList<Team> teams;
 
-    public Race(ArrayList<Car> cars, String country, String circuitName, ArrayList<Team> teams) {
+    public RaceResult(ArrayList<Car> cars, String country, String circuitName, ArrayList<Team> teams) {
         this.circuitName = circuitName;
         this.country = country;
         this.cars = cars;
@@ -31,6 +30,10 @@ public class Race {
 
     public String getCountry() {
         return this.country;
+    }
+
+    public int[] getClassification() {
+        return this.classification;
     }
 
     public void startRace() {
@@ -61,9 +64,10 @@ public class Race {
             car.calculateEficiency(car.getAccountableDriver().getHandicap());
         }
 
+        //showRaceResult(classification, drivers);
     }
 
-    public void showRaceResult(int[] classification, ArrayList<Driver> drivers) {
+    private void showRaceResult(int[] classification, ArrayList<Driver> drivers) {
 
         System.out.println("Circuito:" + this.getCircuitName());
         System.out.println("País: " + this.getCountry());
