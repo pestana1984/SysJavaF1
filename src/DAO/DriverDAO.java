@@ -123,4 +123,17 @@ public class DriverDAO {
 
         return idDriver;
     }
+
+    public static void UpdatePointsOnSeason(ConnectDB db, int carNumber, int points){
+        String sqlUpdatePoints = "UPDATE \"Drivers\" SET POINTSONSEASON = POINTSONSEASON + ? WHERE CARNUMBER = ?";
+
+        try(PreparedStatement ps = db.getConnection().prepareStatement(sqlUpdatePoints)){
+            ps.setInt(1, points);
+            ps.setInt(2, carNumber);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+    }
 }

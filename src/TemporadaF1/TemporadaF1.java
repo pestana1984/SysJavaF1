@@ -155,8 +155,5 @@ public class TemporadaF1 {
 
         rr2.forEach(System.out::println);
 
-        //TODO - Corrigir a atualização de pontos dos pilotos
-        //TODO - Corrigir a definição da pontuação de cada corrida (Race Result)
-
     }
 }

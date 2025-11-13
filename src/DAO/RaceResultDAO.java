@@ -3,7 +3,6 @@ package DAO;
 import Data.ConnectDB;
 import Entities.RaceResultResponse;
 import Models.Circuit;
-import Models.RaceResult;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,13 +21,54 @@ public class RaceResultDAO {
         if(circuit == null)
             return;
 
-        //TODO: Corrigir a busca do ID do piloto pelo numero do carro
-
         for(int i = 0; i < classification.length; i++){
             try(PreparedStatement ps = db.getConnection().prepareStatement(sqlRaceResult)){
                 ps.setInt(1, DriverDAO.GetDriverIdByCarNumber(db, classification[i]));
                 ps.setInt(2, i+1);
-                ps.setInt(3, i+10);
+                switch (i+1) {
+                    case 1:
+                        ps.setInt(3, 25);
+                        DriverDAO.UpdatePointsOnSeason(db, classification[i], 25);
+                        break;
+                    case 2:
+                        ps.setInt(3, 18);
+                        DriverDAO.UpdatePointsOnSeason(db, classification[i], 18);
+                        break;
+                    case 3:
+                        ps.setInt(3,15);
+                        DriverDAO.UpdatePointsOnSeason(db, classification[i], 15);
+                        break;
+                    case 4:
+                        ps.setInt(3,12);
+                        DriverDAO.UpdatePointsOnSeason(db, classification[i], 12);
+                        break;
+                    case 5:
+                        ps.setInt(3,10);
+                        DriverDAO.UpdatePointsOnSeason(db, classification[i], 10);
+                        break;
+                    case 6:
+                        ps.setInt(3,8);
+                        DriverDAO.UpdatePointsOnSeason(db, classification[i], 8);
+                        break;
+                    case 7:
+                        ps.setInt(3,6);
+                        DriverDAO.UpdatePointsOnSeason(db, classification[i], 6);
+                        break;
+                    case 8:
+                        ps.setInt(3,4);
+                        DriverDAO.UpdatePointsOnSeason(db, classification[i], 4);
+                        break;
+                    case 9:
+                        ps.setInt(3,2);
+                        DriverDAO.UpdatePointsOnSeason(db, classification[i], 2);
+                        break;
+                    case 10:
+                        ps.setInt(3,1);
+                        DriverDAO.UpdatePointsOnSeason(db, classification[i], 1);
+                        break;
+                    default:
+                        break;
+                }
                 ps.setInt(4, circuit.getId());
 
                 ps.executeUpdate();
