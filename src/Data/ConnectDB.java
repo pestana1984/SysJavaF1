@@ -17,7 +17,7 @@ public class ConnectDB {
 
     }
 
-    public static Connection getConnection(){
+    public Connection getConnection(){
         try{
             Connection connection = DriverManager.getConnection(hostname, user, password);
             return connection;
