@@ -13,46 +13,21 @@ import java.util.Scanner;
 
 public class TeamDAO {
 
-    public static void InsertTeam(ConnectDB db) {
+    public static void InsertTeam(ConnectDB db, Team team) {
 
         String sqlTeam = "INSERT INTO \"Teams\" (NAME, CITIZENSHIP, POINTSONSEASON, ID_TEAMBOSS) VALUES (?, ?, ?, ?)";
 
-        try{
-            Scanner sc = new Scanner(System.in);
-            System.out.println("Informe o nome da equipe: ");
-            String nomeEquipe =  sc.nextLine();
-            System.out.println("Informe o pais da equipe: ");
-            String paisEquipe = sc.nextLine();
+        try(PreparedStatement ps = db.getConnection().prepareStatement(sqlTeam)){
 
-            TeamBossDAO.GetTeamBosses(db).forEach(TeamBoss::showInfo);
-
-            System.out.println("Informe o nome do chefe da equipe: ");
-            String chefe = sc.nextLine();
-
-            String sqlBoss = "SELECT id FROM \"TeamMembers\" WHERE NAME = ?";
-
-            PreparedStatement psBoss = db.getConnection().prepareStatement(sqlBoss);
-            psBoss.setString(1, chefe);
-            ResultSet rsBoss = psBoss.executeQuery();
-
-            rsBoss.next();
-            int bossId = rsBoss.getInt("id");
-
-            sqlBoss = "SELECT id FROM \"TeamBosses\" WHERE ID_MEMBER = ?";
-
-            psBoss = db.getConnection().prepareStatement(sqlBoss);
-            psBoss.setInt(1, bossId);
-            rsBoss = psBoss.executeQuery();
-            rsBoss.next();
-            bossId = rsBoss.getInt("id");
-
-            PreparedStatement ps = db.getConnection().prepareStatement(sqlTeam);
-            ps.setString(1, nomeEquipe);
-            ps.setString(2, paisEquipe);
+            ps.setString(1, team.getName());
+            ps.setString(2, team.getCitizenship());
             ps.setInt(3, 0);
-            ps.setInt(4, bossId);
+            ps.setInt(4, TeamBossDAO.GetBossIdByName(db, team.getBossName()));
 
             ps.executeUpdate();
+
+            ps.close();
+            System.out.println("Equipe cadastrada com sucesso!");
 
         }
         catch (SQLException e) {
@@ -60,7 +35,7 @@ public class TeamDAO {
         }
     }
 
-    public static ArrayList<Team> GetTeams(ConnectDB db) {
+    public static ArrayList<Team> GetAllTeams(ConnectDB db) {
         String sql = "select t.name, t.citizenship, tm.name from \"Teams\" t " +
                 "join \"TeamBosses\" tb " +
                 "on t.id_teamboss = tb.id " +

@@ -1,5 +1,8 @@
 package Services;
 
+import DAO.TeamBossDAO;
+import DAO.TeamDAO;
+import Data.ConnectDB;
 import Models.Team;
 import Models.TeamBoss;
 
@@ -8,30 +11,45 @@ import java.util.Comparator;
 import java.util.Scanner;
 
 public class TeamService {
-    public static Team CreateTeam(){
+    public static void CreateTeam(ConnectDB db){
         Scanner sc = new Scanner(System.in);
 
         System.out.println("Informe o nome da equipe: ");
         String nomeEquipe =  sc.nextLine();
+
         System.out.println("Informe o pais da equipe: ");
         String paisEquipe = sc.nextLine();
 
-        System.out.println("Informe o nome do chefe da equipe: ");
-        String nome =  sc.nextLine();
-        System.out.println("Informe a idade do chefe da equipe: ");
-        int idade = sc.nextInt();
-        sc.nextLine();
-        System.out.println("Informe o salário do chefe da equipe: ");
-        double salario = sc.nextDouble();
-        sc.nextLine();
+        ArrayList<TeamBoss> bosses = TeamBossDAO.GetTeamBossesWithNoTeam(db);
 
-        return new Team(nomeEquipe, paisEquipe, new TeamBoss(nome, idade, salario));
+        if(bosses.isEmpty()){
+            System.err.println("Não existem chefes de equipes disponiveis.");
+
+            TeamBoss boss = TeamBossService.CreateTeamBoss(db);
+
+            Team team = new Team(nomeEquipe, paisEquipe, boss);
+
+            TeamDAO.InsertTeam(db, team);
+        }
+        else{
+            bosses.forEach(TeamBoss::showInfo);
+
+            System.out.println("Informe o nome do chefe da equipe: ");
+            String nome = sc.nextLine();
+
+            TeamBoss boss = TeamBossDAO.GetBossByName(db, nome);
+
+            Team team = new Team(nomeEquipe, paisEquipe, boss);
+
+            TeamDAO.InsertTeam(db, team);
+        }
     }
 
-    public static void GetAllTeams(){
-
+    public static void GetAllTeams(ConnectDB db){
+        TeamDAO.GetAllTeams(db).forEach(Team::showTeam);
     }
-    public static void DeleteTeam(){
+
+    public static void DeleteTeam(ConnectDB db){
 
     }
 

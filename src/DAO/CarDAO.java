@@ -43,7 +43,7 @@ public class CarDAO {
 
             int idDriver = rsDriver.getInt("id");
 
-            TeamDAO.GetTeams(db).forEach(Team::showTeam);
+            TeamDAO.GetAllTeams(db).forEach(Team::showTeam);
             System.out.printf("Informe a equipe desejada:");
             String nomeEquipe = sc.nextLine();
 

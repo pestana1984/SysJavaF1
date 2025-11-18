@@ -25,6 +25,10 @@ public class Team {
         this.name = name;
     }
 
+    public String getCitizenship() {
+        return citizenship;
+    }
+
     public String getName() {
         return this.name;
     }
@@ -50,16 +54,18 @@ public class Team {
     }
 
     public void showTeam(){
-        System.out.println(this.name);
-        System.out.println(this.citizenship);
 
-        for(int i = 0; i < cars.size(); i++){
-            cars.get(i).showInfo();
-        }
+        System.out.println("Nome da Equipe: " + this.name);
+        System.out.println("Pais de Origem: " + this.citizenship);
+        System.out.println("----------\n");
 
-        for(int i = 0; i < members.size(); i++){
-            members.get(i).showInfo();
-        }
+//        for(int i = 0; i < cars.size(); i++){
+//            cars.get(i).showInfo();
+//        }
+//
+//        for(int i = 0; i < members.size(); i++){
+//            members.get(i).showInfo();
+//        }
     }
 
     public void calculatePointsOnSeason(){

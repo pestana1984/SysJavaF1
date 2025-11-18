@@ -12,31 +12,24 @@ import java.util.Scanner;
 
 public class CircuitDAO {
 
-    public static void InsertCircuit(ConnectDB db) {
+    public static int InsertCircuit(ConnectDB db, Circuit circuit) {
         String sqlRace = "INSERT INTO \"Circuits\" (NAME, COUNTRY) VALUES (?, ?)";
 
-        try(PreparedStatement ps = db.getConnection().prepareStatement(sqlRace)){
+        int affectedRows = 0;
 
-            Scanner sc = new Scanner(System.in);
+        try (PreparedStatement ps = db.getConnection().prepareStatement(sqlRace)) {
 
-            System.out.println("Informe o nome do circuito: ");
-            String nome = sc.nextLine();
-            System.out.println("Informe o pais do circuito: ");
-            String pais = sc.nextLine();
+            ps.setString(1, circuit.getName());
+            ps.setString(2, circuit.getCountry());
 
-            ps.setString(1, nome);
-            ps.setString(2, pais);
+            affectedRows = ps.executeUpdate();
 
-            int affectedRows = ps.executeUpdate();
-
-            if (affectedRows > 0) {
-                System.out.println("Circuito inserido com sucesso!");
-            }
 
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
 
+        return affectedRows;
     }
 
     public static ArrayList<Circuit> GetCircuits(ConnectDB db) {
@@ -44,10 +37,10 @@ public class CircuitDAO {
 
         ArrayList<Circuit> circuits = new ArrayList<>();
 
-        try(PreparedStatement ps = db.getConnection().prepareStatement(sql)){
+        try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
 
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 Circuit circuit = new Circuit(rs.getString(1), rs.getString(2), rs.getInt(3));
                 circuits.add(circuit);
             }
@@ -62,7 +55,7 @@ public class CircuitDAO {
     public static Circuit GetCircuitByName(ConnectDB db, String name) {
         String sql = "SELECT NAME, COUNTRY, ID FROM \"Circuits\" WHERE NAME = ?";
 
-        try(PreparedStatement ps = db.getConnection().prepareStatement(sql)){
+        try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
 
             ps.setString(1, name);
 
@@ -71,8 +64,20 @@ public class CircuitDAO {
             return new Circuit(rs.getString(1), rs.getString(2), rs.getInt(3));
 
         } catch (SQLException e) {
-            System.err.println(e.getMessage());;
+            System.err.println(e.getMessage());
+            ;
         }
         return null;
+    }
+
+    public static void DeleteCircuitByName(ConnectDB db, String name) {
+        String sql = "DELETE FROM \"Circuits\" WHERE NAME = ?";
+
+        try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
+            ps.setString(1, name);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
     }
 }

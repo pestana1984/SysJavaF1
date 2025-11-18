@@ -1,10 +1,7 @@
 package TemporadaF1;
 
 import Data.ConnectDB;
-import Services.CircuitService;
-import Services.MemberService;
-import Services.RaceService;
-import Services.TeamService;
+import Services.*;
 import Utils.Menu;
 
 import java.util.ArrayList;
@@ -26,28 +23,34 @@ public class TemporadaF1 {
         add("2 - Listar Todos");
         add("3 - Remover");
         add("4 - Voltar");
-    }}, "Menu Principal");
+    }}, "Menu Circuitos");
 
     static Menu teamsMenu = new Menu(new ArrayList<>() {{
         add("1 - Adicionar");
         add("2 - Listar Todos");
         add("3 - Remover");
         add("4 - Voltar");
-    }}, "Menu Principal");
+    }}, "Menu Equipes");
 
     static Menu membersMenu = new Menu(new ArrayList<>() {{
         add("1 - Adicionar");
         add("2 - Listar Todos");
         add("3 - Remover");
         add("4 - Voltar");
-    }}, "Menu Principal");
+    }}, "Menu Membros");
 
     static Menu racesMenu = new Menu(new ArrayList<>() {{
         add("1 - Adicionar");
         add("2 - Listar Todos");
         add("3 - Remover");
         add("4 - Voltar");
-    }}, "Menu Principal");
+    }}, "Menu Corridas");
+
+    static Menu seasonMenu = new Menu(new ArrayList<>() {{
+        add("1 - Campeonato de Construtores");
+        add("2 - Campeonato de Pilotos");
+        add("3 - Voltar");
+    }}, "Menu Temporada");
 
     static void main(String[] args) {
 
@@ -60,13 +63,13 @@ public class TemporadaF1 {
                 case 1:
                     switch (circuitsMenu.showMenu()) {
                         case 1:
-                            CircuitService.CreateCircuit();
+                            CircuitService.CreateCircuit(db);
                             break;
                         case 2:
-                            CircuitService.GetAllCircuits();
+                            CircuitService.GetAllCircuits(db);
                             break;
                         case 3:
-                            CircuitService.DeleteCircuit();
+                            CircuitService.DeleteCircuit(db);
                             break;
                         case 4:
                             break;
@@ -78,13 +81,13 @@ public class TemporadaF1 {
                 case 2:
                     switch (teamsMenu.showMenu()) {
                         case 1:
-                            TeamService.CreateTeam();
+                            TeamService.CreateTeam(db);
                             break;
                         case 2:
-                            TeamService.GetAllTeams();
+                            TeamService.GetAllTeams(db);
                             break;
                         case 3:
-                            TeamService.DeleteTeam();
+                            TeamService.DeleteTeam(db);
                             break;
                         case 4:
                             break;
@@ -130,7 +133,19 @@ public class TemporadaF1 {
                     }
                     break;
                 case 5:
-                    //Adicionar Menu Temporada
+                    switch (seasonMenu.showMenu()) {
+                        case 1:
+                            SeasonService.DriversChampionship();
+                            break;
+                        case 2:
+                            SeasonService.TeamsChampionship();
+                            break;
+                        case 3:
+                            break;
+                        default:
+                            System.err.println("Opção Inválida");
+                            break;
+                    }
                     break;
                 case 0:
                     System.exit(0);
