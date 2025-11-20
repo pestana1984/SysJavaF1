@@ -11,6 +11,7 @@ import java.util.Comparator;
 import java.util.Scanner;
 
 public class TeamService {
+
     public static void CreateTeam(ConnectDB db){
         Scanner sc = new Scanner(System.in);
 
@@ -24,12 +25,6 @@ public class TeamService {
 
         if(bosses.isEmpty()){
             System.err.println("Não existem chefes de equipes disponiveis.");
-
-            TeamBoss boss = TeamBossService.CreateTeamBoss(db);
-
-            Team team = new Team(nomeEquipe, paisEquipe, boss);
-
-            TeamDAO.InsertTeam(db, team);
         }
         else{
             bosses.forEach(TeamBoss::showInfo);
@@ -51,6 +46,13 @@ public class TeamService {
 
     public static void DeleteTeam(ConnectDB db){
 
+        GetAllTeams(db);
+
+        System.out.println("Informe o ID da equipe que deseja excluir: ");
+        Scanner sc = new Scanner(System.in);
+        String nome = sc.nextLine();
+
+        TeamDAO.DeleteTeamByID(db, TeamDAO.GetTeamByName(db, nome));
     }
 
     public void ShowTeamsChampionship(ArrayList<Team> teams){

@@ -1,7 +1,6 @@
 package DAO;
 
 import Data.ConnectDB;
-import Models.Engineer;
 import Models.Team;
 import Models.TeamBoss;
 
@@ -9,7 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class TeamDAO {
 
@@ -65,6 +63,33 @@ public class TeamDAO {
         }
 
         return teams;
+    }
+
+    public static int GetTeamByName(ConnectDB db, String name){
+        String sqlTeam = "SELECT id FROM \"Teams\" "+
+                        "WHERE NAME = ?";
+
+        try (PreparedStatement psTeam = db.getConnection().prepareStatement(sqlTeam)) {
+            psTeam.setString(1, name);
+            ResultSet rsTeam = psTeam.executeQuery();
+            rsTeam.next();
+            return rsTeam.getInt("id");
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            return 0;
+        }
+    }
+
+    public static void DeleteTeamByID(ConnectDB db, int id){
+        String sqlTeam = "DELETE FROM \"Teams\" WHERE id = ?";
+
+        try (PreparedStatement psTeam = db.getConnection().prepareStatement(sqlTeam)) {
+            psTeam.setInt(1, id);
+            psTeam.executeUpdate();
+        }
+        catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
 }

@@ -26,7 +26,9 @@ public class CircuitService {
     }
 
     public static void GetAllCircuits(ConnectDB db){
+        System.out.println("---------------------------");
         CircuitDAO.GetCircuits(db).forEach(Circuit::showInfo);
+        System.out.println("---------------------------");
     }
 
     public static void DeleteCircuit(ConnectDB db){

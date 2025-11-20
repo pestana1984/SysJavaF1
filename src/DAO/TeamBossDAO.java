@@ -8,7 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class TeamBossDAO {
 
@@ -100,9 +99,11 @@ public class TeamBossDAO {
         }
     }
 
-    //TODO Ajustar o Select dessa função
     public static int GetBossIdByName(ConnectDB db, String name) {
-        String sqlBoss = "SELECT ID FROM \"TeamMembers\" WHERE NAME = ?";
+        String sqlBoss = "SELECT tb.id FROM \"TeamBosses\" tb " +
+                            "join \"TeamMembers\" tm " +
+                            "on tm.id = tb.id_member " +
+                            "WHERE tm.NAME = ?";
 
         try (PreparedStatement psBoss = db.getConnection().prepareStatement(sqlBoss)) {
             psBoss.setString(1, name);

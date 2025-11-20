@@ -10,26 +10,11 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class DriverDAO {
-    public static void InsertDriver(ConnectDB db) {
+    public static void InsertDriver(ConnectDB db, Driver driver) {
 
         String sqlMember = "INSERT INTO \"TeamMembers\" (NAME, AGE, WAGE) VALUES (?, ?, ?)";
 
         try {
-            Scanner sc = new Scanner(System.in);
-
-            System.out.println("Informe o nome: ");
-            String nome = sc.nextLine();
-            System.out.println("Informe a idade: ");
-            int idade = sc.nextInt();
-            sc.nextLine();
-            System.out.println("Informe o salario: ");
-            double salario = sc.nextDouble();
-            sc.nextLine();
-            System.out.println("Informe o numero que o piloto vai usar: ");
-            int numero = sc.nextInt();
-            sc.nextLine();
-
-            Driver driver = new Driver(nome, idade, salario, numero);
 
             PreparedStatement ps = db.getConnection().prepareStatement(sqlMember, PreparedStatement.RETURN_GENERATED_KEYS);
 

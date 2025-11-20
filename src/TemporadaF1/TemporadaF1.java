@@ -54,8 +54,8 @@ public class TemporadaF1 {
 
     static void main(String[] args) {
 
-        ConnectDB db = new ConnectDB("dpg-d3rcb88gjchc73cpjlug-a.oregon-postgres.render.com",
-                "testjava", "Q0buWnbkqDMFmYEHZXXMtSHL54NHrNZ9", "testjava_gz5z");
+        ConnectDB db = new ConnectDB("localhost",
+                "postgres", "pg@2025!", "Formula1");
 
 
         while (true) {
@@ -99,13 +99,13 @@ public class TemporadaF1 {
                 case 3:
                     switch (membersMenu.showMenu()) {
                         case 1:
-                            MemberService.CreateMember();
+                            MemberService.CreateMember(db);
                             break;
                         case 2:
-                            MemberService.GetAllMembers();
+                            MemberService.GetAllMembers(db);
                             break;
                         case 3:
-                            MemberService.DeleteMember();
+                            MemberService.DeleteMember(db);
                             break;
                         case 4:
                             break;

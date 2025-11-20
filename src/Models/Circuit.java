@@ -28,6 +28,6 @@ public class Circuit {
     }
 
     public void showInfo(){
-        System.out.println("Circuito: " + this.name + " - " + this.country);
+        System.out.println("Circuito: " + this.name + " - " + this.country + "\n");
     }
 }
