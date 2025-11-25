@@ -2,6 +2,7 @@ package DAO;
 
 import Data.ConnectDB;
 import Models.Engineer;
+import Models.TeamBoss;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -80,5 +81,101 @@ public class EngineerDAO {
         }
 
         return engineers;
+    }
+
+    public static Engineer GetEngineerByName(ConnectDB db, String name) {
+        String sqlEngineer = "SELECT tm.name, tm.age, tm.wage, e.specialty, e.yearofexperience " +
+                                "FROM \"TeamMembers\" tm " +
+                                "JOIN \"Engineers\" e " +
+                                "on tm.id = e.id_member";
+
+        try (PreparedStatement psBoss = db.getConnection().prepareStatement(sqlEngineer)) {
+
+            psBoss.setString(1, name);
+            ResultSet rsEngineer = psBoss.executeQuery();
+
+            Engineer engineer = null;
+
+            while (rsEngineer.next()) {
+                engineer = new Engineer(rsEngineer.getString("name"),
+                        rsEngineer.getInt("age"),
+                        rsEngineer.getDouble("wage"),
+                        rsEngineer.getString("specialty"),
+                        rsEngineer.getInt("yearofexpirience")
+                );
+            }
+
+            return engineer;
+
+        }
+        catch (SQLException e) {
+            System.err.println(e.getMessage());
+            return null;
+        }
+    }
+
+    public static int GetEngineerIdByName(ConnectDB db, String name) {
+        String sqlEngineer = "SELECT tb.id FROM \"Engineers\" e " +
+                "join \"TeamMembers\" tm " +
+                "on tm.id = e.id_member " +
+                "WHERE tm.NAME = ?";
+
+        try (PreparedStatement psEngineer = db.getConnection().prepareStatement(sqlEngineer)) {
+            psEngineer.setString(1, name);
+            ResultSet rsBoss = psEngineer.executeQuery();
+            rsBoss.next();
+
+            return rsBoss.getInt("id");
+        }
+        catch (SQLException e) {
+            System.err.println(e.getMessage());
+            return 0;
+        }
+    }
+
+    public static void DeleteEngineer(ConnectDB db, Engineer engineer){
+        String sqlEngineer = "DELETE FROM \"Engineers\" WHERE id  = ?";
+
+        String sqlMember = "DELETE FROM \"TeamMembers\" WHERE id = ?";
+
+        int idMember = 0;
+
+        String sqlMemberId = "select id_member from \"Engineers\" e " +
+                "join \"TeamMembers\" tm " +
+                "ON e.id_member = tm.id" +
+                "WHERE e.idmember = ?";
+
+        try(PreparedStatement ps = db.getConnection().prepareStatement(sqlMemberId)){
+            ps.setInt(1, GetEngineerIdByName(db, engineer.getName()));
+            idMember = ps.executeQuery().getInt("id_member");
+        }
+        catch(SQLException e){
+            System.err.println(e.getMessage());
+        }
+        catch(Exception e){
+            System.err.println(e.getMessage());
+        }
+
+        try(PreparedStatement ps = db.getConnection().prepareStatement(sqlEngineer)){
+            ps.setInt(1, GetEngineerIdByName(db, engineer.getName()));
+            ps.executeUpdate();
+        }
+        catch(SQLException e){
+            System.err.println(e.getMessage());
+        }
+        catch(Exception e){
+            System.err.println(e.getMessage());
+        }
+
+        try(PreparedStatement ps = db.getConnection().prepareStatement(sqlMember)){
+            ps.setInt(1, idMember);
+            ps.executeUpdate();
+        }
+        catch(SQLException e){
+            System.err.println(e.getMessage());
+        }
+        catch(Exception e){
+            System.err.println(e.getMessage());
+        }
     }
 }

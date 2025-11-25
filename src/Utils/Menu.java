@@ -24,5 +24,6 @@ public class Menu {
 
         System.out.print("Informe a opção desejada: ");
         return sc.nextInt();
+
     }
 }

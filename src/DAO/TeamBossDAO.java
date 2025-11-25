@@ -1,7 +1,6 @@
 package DAO;
 
 import Data.ConnectDB;
-import Models.Driver;
 import Models.TeamBoss;
 
 import java.sql.PreparedStatement;
@@ -141,5 +140,50 @@ public class TeamBossDAO {
             System.err.println(e.getMessage());
         }
         return teamBosses;
+    }
+
+    public static void DeleteBoss(ConnectDB db, TeamBoss boss){
+        String sqlBoss = "DELETE FROM \"TeamBosses\" WHERE id  = ?";
+
+        String sqlMember = "DELETE FROM \"TeamMembers\" WHERE id = ?";
+
+        int idMember = 0;
+
+        String sqlMemberId = "select id_member from \"TeamBosses\" tb " +
+                "join \"TeamMembers\" tm " +
+                "ON tb.id_member = tm.id";
+
+        try(PreparedStatement ps = db.getConnection().prepareStatement(sqlMemberId)){
+            ps.setInt(1, GetBossIdByName(db, boss.getName()));
+            idMember = ps.executeQuery().getInt("id_member");
+        }
+        catch(SQLException e){
+            System.err.println(e.getMessage());
+        }
+        catch(Exception e){
+            System.err.println(e.getMessage());
+        }
+
+        try(PreparedStatement ps = db.getConnection().prepareStatement(sqlBoss)){
+            ps.setInt(1, GetBossIdByName(db, boss.getName()));
+            ps.executeUpdate();
+        }
+        catch(SQLException e){
+            System.err.println(e.getMessage());
+        }
+        catch(Exception e){
+            System.err.println(e.getMessage());
+        }
+
+        try(PreparedStatement ps = db.getConnection().prepareStatement(sqlMember)){
+            ps.setInt(1, idMember);
+            ps.executeUpdate();
+        }
+        catch(SQLException e){
+            System.err.println(e.getMessage());
+        }
+        catch(Exception e){
+            System.err.println(e.getMessage());
+        }
     }
 }

@@ -6,6 +6,10 @@ import Utils.Menu;
 
 import java.util.ArrayList;
 
+//TODO - Testar o Salvar Corrida
+//TODO - Cadastrar novas equipes
+//TODO - Cadastrar novos pilotos
+//TODO - Cadastrar novos chefes
 
 public class TemporadaF1 {
 
@@ -57,6 +61,7 @@ public class TemporadaF1 {
         ConnectDB db = new ConnectDB("localhost",
                 "postgres", "pg@2025!", "Formula1");
 
+        RaceService _raceService = new RaceService();
 
         while (true) {
             switch (mainMenu.showMenu()) {
@@ -117,13 +122,13 @@ public class TemporadaF1 {
                 case 4:
                     switch (racesMenu.showMenu()) {
                         case 1:
-                            RaceService.CreateRace();
+                            _raceService.CreateRace(db);
                             break;
                         case 2:
-                            RaceService.GetAllRaces();
+                            _raceService.GetAllRaces(db);
                             break;
                         case 3:
-                            RaceService.DeleteRace();
+                            //_raceService.DeleteRace(db);
                             break;
                         case 4:
                             break;

@@ -7,7 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class DriverDAO {
     public static void InsertDriver(ConnectDB db, Driver driver) {
@@ -101,23 +100,92 @@ public class DriverDAO {
             }
 
 
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
         return idDriver;
     }
 
-    public static void UpdatePointsOnSeason(ConnectDB db, int carNumber, int points){
+    public static Driver GetDriverByName(ConnectDB db, String name) {
+        String sqlSelectDriver = "select tm.name, tm.age, tm.wage, d.carnumber, d.handicap, d.pointsonseason, d.id " +
+                "from \"TeamMembers\" tm " +
+                "join \"Drivers\" d " +
+                "on tm.id = d.id_member" +
+                "WHERE tm.name = ?";
+
+        Driver driver = null;
+
+        try (PreparedStatement ps = db.getConnection().prepareStatement(sqlSelectDriver)) {
+
+            ps.setString(1, name);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                driver = new Driver(rs.getString("name"),
+                        rs.getInt("age"),
+                        rs.getDouble("wage"),
+                        rs.getInt("carnumber"),
+                        rs.getInt("handicap"),
+                        rs.getInt("pointsonseason"),
+                        rs.getInt("id"));
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return driver;
+    }
+
+    public static void UpdatePointsOnSeason(ConnectDB db, int carNumber, int points) {
         String sqlUpdatePoints = "UPDATE \"Drivers\" SET POINTSONSEASON = POINTSONSEASON + ? WHERE CARNUMBER = ?";
 
-        try(PreparedStatement ps = db.getConnection().prepareStatement(sqlUpdatePoints)){
+        try (PreparedStatement ps = db.getConnection().prepareStatement(sqlUpdatePoints)) {
             ps.setInt(1, points);
             ps.setInt(2, carNumber);
             ps.executeUpdate();
 
         } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    public static void DeleteDriver(ConnectDB db, Driver driver) {
+        String sqlDriver = "DELETE FROM \"Drivers\" WHERE carnumber  = ?";
+
+        String sqlMember = "DELETE FROM \"TeamMembers\" WHERE id = ?";
+
+        String sqlMemberId = "select id_member from \"Drivers\" d " +
+                "join \"TeamMembers\" tm " +
+                "ON d.id_member = tm.id" +
+                "WHERE d.carnumber = ?";
+
+        int idMember = 0;
+
+        try (PreparedStatement ps = db.getConnection().prepareStatement(sqlMemberId)) {
+            ps.setInt(1, driver.getCarNumber());
+            idMember = ps.executeQuery().getInt("id_member");
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+
+        try (PreparedStatement ps = db.getConnection().prepareStatement(sqlDriver)) {
+            ps.setInt(1, driver.getCarNumber());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+
+        try (PreparedStatement ps = db.getConnection().prepareStatement(sqlMember)) {
+            ps.setInt(1, idMember);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } catch (Exception e) {
             System.err.println(e.getMessage());
         }
     }

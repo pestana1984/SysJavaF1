@@ -8,6 +8,7 @@ import Models.Driver;
 import Models.Engineer;
 import Models.TeamBoss;
 
+import java.sql.PreparedStatement;
 import java.util.Scanner;
 
 public class MemberService {
@@ -57,19 +58,55 @@ public class MemberService {
     public static void GetAllMembers(ConnectDB db) {
         Scanner sc = new Scanner(System.in);
 
+        System.out.println("Engenheiros(as): ");
         EngineerDAO.GetEngineers(db).forEach(Engineer::showInfo);
         sc.nextLine();
 
+        System.out.println("Piloto(s): ");
         DriverDAO.GetDrivers(db).forEach(Driver::showInfo);
         sc.nextLine();
 
+        System.out.println("Chefe de Equipe(s):");
         TeamBossDAO.GetTeamBosses(db).forEach(TeamBoss::showInfo);
         sc.nextLine();
 
-        sc.close();
+        //sc.close();
     }
 
     public static void DeleteMember(ConnectDB db) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("1 - Chefe");
+        System.out.println("2 - Engenheiro");
+        System.out.println("3 - Piloto");
+        System.out.println("Qual é o tipo de Membro que está será removido? ");
+
+        int option = sc.nextInt();
+        sc.nextLine();
+        String nome;
+        switch (option) {
+            case 1:
+                System.out.println("Informe o nome do chefe: ");
+                nome = sc.nextLine();
+                TeamBoss tb = TeamBossDAO.GetBossByName(db, nome);
+                TeamBossDAO.DeleteBoss(db, tb);
+                break;
+            case 2:
+                System.out.println("Informe o nome do engenheiro: ");
+                nome = sc.nextLine();
+                Engineer e = EngineerDAO.GetEngineerByName(db, nome);
+                EngineerDAO.DeleteEngineer(db, e);
+                break;
+            case 3:
+                System.out.println("Informe o nome do piloto: ");
+                nome = sc.nextLine();
+                Driver driver = DriverDAO.GetDriverByName(db, nome);
+                DriverDAO.DeleteDriver(db, driver);
+                break;
+            default:
+                System.err.println("Opção Inválida");
+        }
+
 
     }
 }

@@ -1,15 +1,45 @@
 package Services;
 
-public class RaceService {
+import DAO.CarDAO;
+import DAO.CircuitDAO;
+import DAO.RaceResultDAO;
+import DAO.TeamDAO;
+import Data.ConnectDB;
+import Models.Circuit;
+import Models.Race;
 
-    public static void CreateRace(){
+import java.util.Scanner;
+
+
+public class RaceService implements IRaceService {
+
+
+    @Override
+    public void CreateRace(ConnectDB db) {
+
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Informe o nome do circuito:");
+        String nome = sc.nextLine();
+
+        Circuit circuit = CircuitDAO.GetCircuitByName(db, nome);
+
+        Race race = new Race(CarDAO.GetCars(db),
+                            circuit.getCountry(),
+                            circuit.getName(),
+                TeamDAO.GetAllTeams(db));
+
+        race.startRace();
+
+        RaceResultDAO.InsertRaceResult(db, race.getClassification(), circuit.getName());
+    }
+
+    @Override
+    public void GetAllRaces(ConnectDB db) {
 
     }
 
-    public static void GetAllRaces(){
-
-    }
-    public static void DeleteRace(){
+    @Override
+    public void DeleteRace(ConnectDB db, Race race) {
 
     }
 }

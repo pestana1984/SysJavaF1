@@ -1,7 +1,8 @@
 package Services;
 
 import Models.Driver;
-import Models.RaceResult;
+import Models.Race;
+
 
 import java.util.Comparator;
 import java.util.Scanner;
@@ -25,7 +26,7 @@ public class DriverService {
         return new Driver(nome, idade, salario, numero);
     }
 
-    public void ShowDriversChampionship(RaceResult race){
+    public void ShowDriversChampionship(Race race){
         System.out.println("\n\nCampeonato de Pilotos:");
         var championship = race.drivers;
 
