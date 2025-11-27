@@ -7,9 +7,6 @@ import Utils.Menu;
 import java.util.ArrayList;
 
 //TODO - Testar o Salvar Corrida
-//TODO - Cadastrar novas equipes
-//TODO - Cadastrar novos pilotos
-//TODO - Cadastrar novos chefes
 
 public class TemporadaF1 {
 
@@ -18,7 +15,8 @@ public class TemporadaF1 {
         add("2 - Equipes");
         add("3 - Membros");
         add("4 - Corridas");
-        add("5 - Temporada");
+        add("5 - Carros");
+        add("6 - Temporada");
         add("0 - Sair");
     }}, "Menu Principal");
 
@@ -42,6 +40,13 @@ public class TemporadaF1 {
         add("3 - Remover");
         add("4 - Voltar");
     }}, "Menu Membros");
+
+    static Menu carsMenu = new Menu(new ArrayList<>() {{
+        add("1 - Adicionar");
+        add("2 - Listar Carros Por Equipe");
+        add("3 - Remover");
+        add("4 - Voltar");
+    }}, "Menu Carros");
 
     static Menu racesMenu = new Menu(new ArrayList<>() {{
         add("1 - Adicionar");
@@ -138,6 +143,22 @@ public class TemporadaF1 {
                     }
                     break;
                 case 5:
+                    switch (carsMenu.showMenu()) {
+                        case 1:
+                            CarService.CreateCar(db);
+                            break;
+                        case 2:
+                            CarService.GetAllCars(db);
+                            break;
+                        case 3:
+                            //CarService.DeleteCar(db);
+                            break;
+                        default:
+                            System.err.println("Opção Inválida");
+                            break;
+                    }
+                    break;
+                case 6:
                     switch (seasonMenu.showMenu()) {
                         case 1:
                             SeasonService.DriversChampionship();
@@ -151,7 +172,6 @@ public class TemporadaF1 {
                             System.err.println("Opção Inválida");
                             break;
                     }
-                    break;
                 case 0:
                     System.exit(0);
                     break;

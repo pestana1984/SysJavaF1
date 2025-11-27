@@ -65,7 +65,7 @@ public class TeamDAO {
         return teams;
     }
 
-    public static int GetTeamByName(ConnectDB db, String name){
+    public static int GetTeamIdByName(ConnectDB db, String name){
         String sqlTeam = "SELECT id FROM \"Teams\" "+
                         "WHERE NAME = ?";
 
@@ -78,6 +78,26 @@ public class TeamDAO {
             System.err.println(e.getMessage());
             return 0;
         }
+    }
+
+    public static Team GetTeamByName(ConnectDB db, String name){
+        String sqlTeam = "SELECT name, citizenship, pointsonseason, id_teamboss FROM \"Teams\" "+
+                "WHERE NAME = ?";
+        Team team = null;
+
+        try (PreparedStatement psTeam = db.getConnection().prepareStatement(sqlTeam)) {
+            psTeam.setString(1, name);
+
+            ResultSet rsTeam = psTeam.executeQuery();
+            rsTeam.next();
+
+            team = new Team(rsTeam.getString("name"));
+        }
+        catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+
+        return team;
     }
 
     public static void DeleteTeamByID(ConnectDB db, int id){

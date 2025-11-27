@@ -23,7 +23,7 @@ public class RaceService implements IRaceService {
 
         Circuit circuit = CircuitDAO.GetCircuitByName(db, nome);
 
-        Race race = new Race(CarDAO.GetCars(db),
+        Race race = new Race(CarDAO.GetAllCars(db),
                             circuit.getCountry(),
                             circuit.getName(),
                 TeamDAO.GetAllTeams(db));

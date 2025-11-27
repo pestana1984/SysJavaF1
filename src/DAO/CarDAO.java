@@ -13,54 +13,32 @@ import java.util.Scanner;
 
 public class CarDAO {
 
-    public static void InsertCar(ConnectDB db) {
+    public static void InsertCar(ConnectDB db, Car car, Team team) {
 
         String sqlCar = "INSERT INTO \"Cars\" (MODEL, HP, AERODYNAMIC, ID_DRIVER, ID_TEAM) VALUES (?, ?, ?, ?, ?)";
+        String sqlDriver = "SELECT id FROM \"Drivers\" WHERE CARNUMBER = ?";
+        String sqlTeam = "SELECT id FROM \"Teams\" WHERE NAME = ?";
 
-        try{
-            Scanner sc = new Scanner(System.in);
-            System.out.println("Informe o modelo do carro: ");
-            String modelo = sc.nextLine();
-            System.out.println("Informe a potencia do carro: ");
-            int potencia = sc.nextInt();
-            sc.nextLine();
+        try(PreparedStatement psDriver = db.getConnection().prepareStatement(sqlDriver)){
 
-            DriverDAO.GetDrivers(db).forEach(Driver::showInfo);
-
-            System.out.println("Informe o nome do piloto do carro: ");
-            String nome = sc.nextLine();
-
-            String sqlDriver = "select d.id from \"Drivers\" d " +
-                    "join \"TeamMembers\" tm " +
-                    "on d.id_member = tm.id " +
-                    "where tm.\"name\" = ?";
-
-            PreparedStatement psDriver = db.getConnection().prepareStatement(sqlDriver);
-            psDriver.setString(1, nome);
+            psDriver.setInt(1, car.getAccountableDriver().carNumber);
 
             var rsDriver = psDriver.executeQuery();
             rsDriver.next();
 
             int idDriver = rsDriver.getInt("id");
 
-            TeamDAO.GetAllTeams(db).forEach(Team::showTeam);
-            System.out.printf("Informe a equipe desejada:");
-            String nomeEquipe = sc.nextLine();
-
-            String sqlTeam = "SELECT id FROM \"Teams\" WHERE NAME = ?";
             PreparedStatement psTeam = db.getConnection().prepareStatement(sqlTeam);
-            psTeam.setString(1, nomeEquipe);
+            psTeam.setString(1, team.getName());
 
             var rsTeam = psTeam.executeQuery();
             rsTeam.next();
 
             int idTeam = rsTeam.getInt("id");
 
-            Car car = new Car(modelo, potencia);
-
             PreparedStatement ps = db.getConnection().prepareStatement(sqlCar);
-            ps.setString(1, modelo);
-            ps.setInt(2, potencia);
+            ps.setString(1, car.getModel());
+            ps.setInt(2, car.getHorsePower());
             ps.setDouble(3,car.getAerodinamicCoeficient());
             ps.setInt(4, idDriver);
             ps.setInt(5, idTeam);
@@ -75,15 +53,16 @@ public class CarDAO {
 
     }
 
-    public static ArrayList<Car> GetCars(ConnectDB db) {
+    public static ArrayList<Car> GetAllCars(ConnectDB db) {
 
-        String sql = "select c.model, c.hp, c.aerodynamic, tm.\"name\", d.carnumber from \"Cars\" c " +
+        String sql = "select c.model, c.hp, c.aerodynamic, " +
+                "tm.\"name\", d.carnumber, c.id_team " +
+                "from \"Cars\" c " +
                 "join \"Drivers\" d " +
                 "on c.id_driver = d.id " +
-                "join \"Teams\" t  " +
-                "on c.id_team = t.id " +
                 "join \"TeamMembers\" tm " +
-                "on tm.id = d.id_member";
+                "on tm.id = d.id_member " +
+                "order by c.id_team ASC";
 
         ArrayList<Car> cars = new ArrayList<>();
 

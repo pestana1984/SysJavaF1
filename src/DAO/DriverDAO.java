@@ -111,7 +111,7 @@ public class DriverDAO {
         String sqlSelectDriver = "select tm.name, tm.age, tm.wage, d.carnumber, d.handicap, d.pointsonseason, d.id " +
                 "from \"TeamMembers\" tm " +
                 "join \"Drivers\" d " +
-                "on tm.id = d.id_member" +
+                "on tm.id = d.id_member " +
                 "WHERE tm.name = ?";
 
         Driver driver = null;

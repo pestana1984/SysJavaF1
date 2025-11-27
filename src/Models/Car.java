@@ -72,6 +72,8 @@ public class Car {
         System.out.println("Potência: " + getHorsePower());
         System.out.println("Aerodinâmica: " +getAerodinamicCoeficient());
         System.out.println("Piloto Titular: " + getAccountableDriver().getName());
+        System.out.println("Numero do Carro: " + getAccountableDriver().getCarNumber());
+        System.out.println("====================================\n");
     }
 
     public double calculateEficiency(int driverHandicap){

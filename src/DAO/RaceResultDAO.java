@@ -13,7 +13,7 @@ public class RaceResultDAO {
 
     public static void InsertRaceResult(ConnectDB db, int[] classification, String circuitName) {
         String sqlRaceResult = "INSERT INTO \"RacesResults\" " +
-                "(ID_DRIVER, POSITION, POINTS, ID_CIRCUIT) " +
+                "(ID_DRIVER, POSITIONS, POINTS, ID_CIRCUIT) " +
                 "VALUES (?, ?, ?, ?)";
 
         Circuit circuit = CircuitDAO.GetCircuitByName(db, circuitName);
@@ -81,7 +81,7 @@ public class RaceResultDAO {
 
     public static ArrayList<RaceResultResponse> GetRaceResults(ConnectDB db, String circuitName){
 
-        String sqlRaceResult = "select c.\"name\", c.country, d.carnumber, tm.\"name\", rr.\"position\", rr.points " +
+        String sqlRaceResult = "select c.\"name\", c.country, d.carnumber, tm.\"name\", rr.\"positions\", rr.points " +
                                 "from \"RacesResults\" rr " +
                                 "join \"Drivers\" d " +
                                 "on rr.id_driver = d.id " +

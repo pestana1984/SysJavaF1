@@ -8,7 +8,6 @@ import Models.Driver;
 import Models.Engineer;
 import Models.TeamBoss;
 
-import java.sql.PreparedStatement;
 import java.util.Scanner;
 
 public class MemberService {

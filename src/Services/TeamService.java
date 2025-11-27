@@ -52,7 +52,7 @@ public class TeamService {
         Scanner sc = new Scanner(System.in);
         String nome = sc.nextLine();
 
-        TeamDAO.DeleteTeamByID(db, TeamDAO.GetTeamByName(db, nome));
+        TeamDAO.DeleteTeamByID(db, TeamDAO.GetTeamIdByName(db, nome));
     }
 
     public void ShowTeamsChampionship(ArrayList<Team> teams){
