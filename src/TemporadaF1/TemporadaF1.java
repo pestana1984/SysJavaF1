@@ -6,8 +6,6 @@ import Utils.Menu;
 
 import java.util.ArrayList;
 
-//TODO - Testar o Salvar Corrida
-
 public class TemporadaF1 {
 
     static Menu mainMenu = new Menu(new ArrayList<>() {{
@@ -56,8 +54,8 @@ public class TemporadaF1 {
     }}, "Menu Corridas");
 
     static Menu seasonMenu = new Menu(new ArrayList<>() {{
-        add("1 - Campeonato de Construtores");
-        add("2 - Campeonato de Pilotos");
+        add("1 - Campeonato de Pilots");
+        add("2 - Campeonato de Construtores");
         add("3 - Voltar");
     }}, "Menu Temporada");
 
@@ -151,7 +149,7 @@ public class TemporadaF1 {
                             CarService.GetAllCars(db);
                             break;
                         case 3:
-                            //CarService.DeleteCar(db);
+                            CarService.DeleteCar(db);
                             break;
                         default:
                             System.err.println("Opção Inválida");
@@ -161,10 +159,10 @@ public class TemporadaF1 {
                 case 6:
                     switch (seasonMenu.showMenu()) {
                         case 1:
-                            SeasonService.DriversChampionship();
+                            SeasonService.DriversChampionship(db);
                             break;
                         case 2:
-                            SeasonService.TeamsChampionship();
+                            SeasonService.TeamsChampionship(db);
                             break;
                         case 3:
                             break;
@@ -172,6 +170,7 @@ public class TemporadaF1 {
                             System.err.println("Opção Inválida");
                             break;
                     }
+                    break;
                 case 0:
                     System.exit(0);
                     break;

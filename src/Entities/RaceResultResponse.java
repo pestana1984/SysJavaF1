@@ -18,6 +18,10 @@ public class RaceResultResponse {
         this.points = points;
     }
 
+    public Circuit getCircuit() {
+        return circuit;
+    }
+
     @Override
     public String toString() {
         return String.format("%s - %d - %s - %d - %d", this.circuit.getName(), this.carNumber, this.driverName, this.position, this.points);

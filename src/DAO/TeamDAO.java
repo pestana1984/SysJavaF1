@@ -112,5 +112,19 @@ public class TeamDAO {
         }
     }
 
+    public static void UpdatePointsOnSeason(ConnectDB db, Team team){
+        String sqlTeam = "UPDATE \"Teams\" SET POINTSONSEASON = ? WHERE name = ?";
+
+        try(PreparedStatement ps = db.getConnection().prepareStatement(sqlTeam)){
+            ps.setInt(1, team.getPointsOnSeason());
+            ps.setString(2, team.getName());
+
+            ps.executeUpdate();
+        }
+        catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
 }
 

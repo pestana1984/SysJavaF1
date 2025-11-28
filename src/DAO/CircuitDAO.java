@@ -65,7 +65,6 @@ public class CircuitDAO {
 
         } catch (SQLException e) {
             System.err.println(e.getMessage());
-            ;
         }
         return null;
     }

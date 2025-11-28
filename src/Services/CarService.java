@@ -42,5 +42,19 @@ public class CarService {
         CarDAO.GetAllCars(db).forEach(Car::showInfo);
 
     }
+
+    public static void DeleteCar(ConnectDB db) {
+
+        CarDAO.GetAllCars(db).forEach(Car::showInfo);
+
+        System.out.println("Informe o numero do carro que deseja excluir: ");
+        int carNumber = new Scanner(System.in).nextInt();
+
+        ;
+        CarDAO.DeleteCar(db,
+                CarDAO.GetCarIdByCarNumber(db, carNumber)
+        );
+
+    }
 }
 

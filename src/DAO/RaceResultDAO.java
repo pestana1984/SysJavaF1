@@ -3,7 +3,7 @@ package DAO;
 import Data.ConnectDB;
 import Entities.RaceResultResponse;
 import Models.Circuit;
-
+import Models.Race;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -79,7 +79,7 @@ public class RaceResultDAO {
         }
     }
 
-    public static ArrayList<RaceResultResponse> GetRaceResults(ConnectDB db, String circuitName){
+    public static RaceResultResponse GetRaceResults(ConnectDB db, String circuitName){
 
         String sqlRaceResult = "select c.\"name\", c.country, d.carnumber, tm.\"name\", rr.\"positions\", rr.points " +
                                 "from \"RacesResults\" rr " +
@@ -91,7 +91,7 @@ public class RaceResultDAO {
                                 "on rr.id_circuit = c.id " +
                                 "where c.\"name\" = ?";
 
-        ArrayList<RaceResultResponse> rr = new ArrayList<RaceResultResponse>();
+        RaceResultResponse rr = null;
 
         try(PreparedStatement ps = db.getConnection().prepareStatement(sqlRaceResult)){
 
@@ -102,13 +102,11 @@ public class RaceResultDAO {
 
                 Circuit circuit = new Circuit(rs.getString(1), rs.getString(2));
 
-                RaceResultResponse result = new RaceResultResponse(circuit, rs.getInt(3),
+                rr = new RaceResultResponse(circuit, rs.getInt(3),
                         rs.getString(4),
                         rs.getInt(5),
                         rs.getInt(6)
                 );
-
-                rr.add(result);
             }
         }
         catch(SQLException e){
@@ -118,4 +116,14 @@ public class RaceResultDAO {
         return rr;
 
     }
+
+//    public static ArrayList<RaceResultResponse> GetAllRacesResults(ConnectDB db){
+//
+//        ArrayList<RaceResultResponse> rr = new ArrayList<>();
+//
+//        CircuitDAO.GetCircuits(db).forEach(circuit -> rr.addAll(GetRaceResults(db, circuit.getName())));
+//
+//        return rr;
+//
+//    }
 }
